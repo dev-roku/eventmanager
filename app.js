@@ -1,68 +1,80 @@
-let menu = document.querySelector("#menu-bars");
-let navbar = document.querySelector(".navbar");
+document.addEventListener('DOMContentLoaded', function () {
+    // Mobile menu toggle
+    const menu = document.querySelector("#menu-bars");
+    const navbar = document.querySelector(".navbar");
 
-menu.onclick () =gt; {
-  menu.classList.toggle("fa-times");
-  navbar.classList.toggle("active");
-};
+    menu.addEventListener('click', () => {
+        menu.classList.toggle("fa-times");
+        navbar.classList.toggle("active");
+    });
 
-let themeToggler = document.querySelector(".theme-toggler");
-let toggleBtn = document.querySelector(".toggle-btn");
+    // Theme toggler
+    const themeToggler = document.querySelector(".theme-toggler");
+    const toggleBtn = document.querySelector(".toggle-btn");
 
-toggleBtn.onclick () = gt; {
-  themeToggler.classList.toggle("active");
-};
+    toggleBtn.addEventListener('click', () => {
+        themeToggler.classList.toggle("active");
+    });
 
-window.onscroll () =gt; {
-  menu.classList.remove("fa-times");
-  navbar.classList.remove("active");
-  themeToggler.classList.remove("active");
-};
+    // Close menus on scroll
+    window.onscroll = () => {
+        menu.classList.remove("fa-times");
+        navbar.classList.remove("active");
+        themeToggler.classList.remove("active");
+    };
 
-document.querySelectorAll(".theme-toggler .theme-btn").forEach((btn) =gt) 
-  btn.onclick () =gt; {
-    let color = btn.style.background;
-    document.querySelector(":root").style.setProperty("--theme-color", color);
-  };
+    // Theme color changer
+    document.querySelectorAll(".theme-toggler .theme-btn").forEach((btn) => {
+        btn.addEventListener('click', () => {
+            let color = btn.style.background;
+            document.documentElement.style.setProperty("--theme-color", color);
+        });
+    });
 
+    // Home slider (Swiper.js)
+    var homeSwiper = new Swiper(".home-slider", {
+        effect: "fade", // Using fade effect for full-screen background
+        grabCursor: true,
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+    });
 
-var swiper = new Swiper(".home-slider", {
-  effect: "coverflow",
-  grabCursor: true,
-  centeredSlides: true,
-  slidesPerView: "auto",
-  coverflowEffect: {
-    rotate: 0,
-    stretch: 0,
-    depth: 100,
-    modifier: 2,
-    slideShadows: true,
-  },
-  loop: true,
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-  },
-});
+    // Review slider (Swiper.js)
+    var reviewSwiper = new Swiper(".review-slider", {
+        slidesPerView: 1,
+        grabCursor: true,
+        loop: true,
+        spaceBetween: 20,
+        breakpoints: {
+            640: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+    });
 
-var swiper = new Swiper(".review-slider", {
-  slidesPerView: 1,
-  grabCursor: true,
-  loop: true,
-  spaceBetween: 10,
-  breakpoints: {
-    0: {
-      slidesPerView: 1,
-    },
-    700: {
-      slidesPerView: 2,
-    },
-    1050: {
-      slidesPerView: 3,
-    },
-  },
-  autoplay: {
-    delay: 5000,
-    disableOnInteraction: false,
-  },
+    // Scroll reveal animation
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            } else {
+                // Optional: remove active class to re-animate on scroll up
+                // reveals[i].classList.remove("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    // Initial check
+    reveal();
 });
